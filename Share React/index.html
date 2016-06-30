@@ -20,14 +20,14 @@ var render = function(text){
 <body style="display: none">
 	<section class="slides layout-widescreen">
 		<article>
-			<h1>Flexbox 分享</h1>
+			<h1>React 分享</h1>
 		</article>
 
 		<article>
-			<h3>Css3-flexbox</h3>
+			<h3>React基础</h3>
 			<ul class="build">
 				<li>介绍</li>
-				<li>伸缩布局盒模型和术语</li>
+				<li>react的思维模式</li>
 				<li>伸缩容器 ―「display」的值「flex」与「inline-flex」</li>
 				<li>伸缩项目</li>
 				<li>排序与方向</li>
@@ -38,33 +38,58 @@ var render = function(text){
 		</article>
 
 		<article class="smaller">
+		<!-- https://facebook.github.io/react/blog/2013/06/05/why-react.html -->
 			<h3>介绍</h3>
 			<ul class="build">
-				<p>旨在提供一个更加有效的方式制定、调整和分布一个容器里的项目布局，即使他们的大小是未知或者是动态的；让容器有能力让其子项目能够改变其宽度、高度、顺序，以最佳方式填充可用空间</p>
-				<p>你现在就可以使用Flexbox</p>
+				<p>React就是以可组合的方式来构建UI，通过虚拟DOM的方式来更新UI的数据变化</p>
+				<p>组件化的开发思路</p>
 				<ul class="build">
-					<li>从2012年9月 CSS Flexible Box Layout Module(www.w3.org/TR/css3-flexbox/)已经成为候选推荐标准（CR）</li>
-					<li class="has_pic flexbox_support">各大浏览器支持程度较好<small>「查」</small><img src="lib/images/flexbox_support.jpg" alt="Flexbox支持度" width="900" height="400"></li>
-					<li>通过灵活使用Flexbox的新旧语法、添加浏览器前缀、sass等实现最佳浏览器兼容</li>
-					<li>Flexbox布局最适合应用程序的组件和小规模的布局，（网格布局更适合那些更大规模的布局）</li>
+					<li>传统的web UI都是通过模板或者html指令的方式。</li>
+					<li>react没有所谓的模板，仅仅从功能角度出发把UI进行拆分，组合。</li>
+					<li>react通过js来render view，推荐JSX</li>
 				</ul>
-				<p>通过Flexbox使布局更加方便灵活</p>
-				<ul class="build flexbox_layouts">
-					<li class="has_pic">Card Layouts<img src="lib/images/card-layouts.png"></li>
-					<li class="has_pic">Split screen layouts<img src="lib/images/split-screen-layouts.png"></li>
-					<li class="has_pic">Pinned Layouts<img src="lib/images/pinned-layouts.png"></li>
-					<li class="has_pic">Newspaper and ad units<img src="lib/images/newspaper-layout.png"></li>
-					<li class="has_pic">Multi-column layouts<img src="lib/images/multi-column-layouts.png"></li>
-					<li class="has_pic">Dashboards<img src="lib/images/dashboards.png"></li>
-					<li>...</li>
+				<p>创造性的UI更新方式</p>
+				<ul class="build">
+					<li>传统的UI更新需要知道哪些数据变了，并把变化的数据更新在指定的DOM里，如jquery, angular</li>
+					<li>react只需要更新组件的状态<br><img src="lib/images/example-ui.png"></li>
 				</ul>
 			</ul>
 		</article>
+		<article class="smaller">
+			<ul class="build">
+				<li>组件初始化时调render()，当数据变化后再次调render()，react通过对两次render()返回进行高效的比较，把真正变化的应用到DOM中</li>
+				<li>render()返回的既不是字符串也不是DOM node，而是一串轻量级的对DOM应该长什么样的描述(虚拟DOM)</li>
+				<li><pre>
+var TextBoxList = React.createClass({
+    getInitialState: function() {
+        return {count: 1};
+    },
+    add: React.autoBind(function() {
+        this.setState({count: this.state.count + 1});
+    }),
+    render: function() {
+        var items = [];
+        for (var i = 0; i < this.state.count; i++) {
+            items.push(&lt;li&gt;&lt;input type="text" placeholder="change me!" /&gt;&lt;/li&gt;);
+        }
+        return (
+            &lt;ul&gt;
+                {items}
+                &lt;input type="button" value="Add an item" onClick={this.add} /&gt;
+            &lt;/ul&gt;
+        );
+    }
+});
+				</pre></li>
+			</ul>
+			<!-- Every time you add a new text box to the list, we "re-render" the whole list, but any text entered in the text boxes is left untouched because React is smart enough to just append the new text box instead of blowing away the old DOM nodes. -->
+		</article>
 
 		<article class="smaller">
-			<h3>Flexbox模型</h3>
 			<div class="build">
-				<p style="text-align:center"><img src="lib/images/Flex-layout.png" alt="Flexbox模型"></p>
+				<ul>
+					<li>引入虚拟DOM，可以很大提高性能，并且具有极大的扩展性<br><img src="lib/images/vitual-dom.png"></li>
+				</ul>
 			</div>
 		</article>
 
