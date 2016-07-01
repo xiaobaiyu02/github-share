@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Shadow DOM 分享</title>
+<title>React 分享</title>
 <link rel="stylesheet" href="lib/mystyle.css">
 <script src="lib/slides.js"></script>
 <script>
@@ -51,476 +51,413 @@ var render = function(text){
 				<p>创造性的UI更新方式</p>
 				<ul class="build">
 					<li>传统的UI更新需要知道哪些数据变了，并把变化的数据更新在指定的DOM里，如jquery, angular</li>
-					<li>react只需要更新组件的状态<br><img src="lib/images/example-ui.png"></li>
+					<li>react只需要更新组件的状态</li>
 				</ul>
 			</ul>
 		</article>
+
+		<article class="smaller">
+			<div class="build flex">
+				<img src="lib/images/example-ui.png">
+				<pre>
+&lt;tr&gt;
+  &lt;td class="name"&gt;Football&lt;/td&gt;
+  &lt;td class="price"&gt;$49.99&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td class="name"&gt;Baseball&lt;/td&gt;
+  &lt;td class="price"&gt;$9.99&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="stock"&gt;
+  &lt;td class="name"&gt;Basketball&lt;/td&gt;
+  &lt;td class="price"&gt;$29.99&lt;/td&gt;
+&lt;/tr&gt;
+
+$('').remove(),  $('').append(),,,
+				</pre>				
+				<pre>
+this.state = {
+	filterText: '',
+	inStockOnly: false
+}
+this.state = {
+	filterText: 'Ba',
+	inStockOnly: true
+}	
+				</pre>
+			</div>
+		</article>
+
 		<article class="smaller">
 			<ul class="build">
-				<li>组件初始化时调render()，当数据变化后再次调render()，react通过对两次render()返回进行高效的比较，把真正变化的应用到DOM中</li>
+				<li>组件初始化时调render()，当数据变化后再次调render()，react通过对两次render()返回进行高效的比较，把真正变化的应用到DOM中(<span class="example">见例子1</span>)</li>
 				<li>render()返回的既不是字符串也不是DOM node，而是一串轻量级的对DOM应该长什么样的描述(虚拟DOM)</li>
-				<li><pre>
-var TextBoxList = React.createClass({
-    getInitialState: function() {
-        return {count: 1};
-    },
-    add: React.autoBind(function() {
-        this.setState({count: this.state.count + 1});
-    }),
-    render: function() {
-        var items = [];
-        for (var i = 0; i < this.state.count; i++) {
-            items.push(&lt;li&gt;&lt;input type="text" placeholder="change me!" /&gt;&lt;/li&gt;);
-        }
-        return (
-            &lt;ul&gt;
-                {items}
-                &lt;input type="button" value="Add an item" onClick={this.add} /&gt;
-            &lt;/ul&gt;
-        );
-    }
-});
-				</pre></li>
+				<li>引入虚拟DOM，可以很大提高性能，并且具有极大的扩展性<br><img src="lib/images/vitual-dom.png"></li>
 			</ul>
 			<!-- Every time you add a new text box to the list, we "re-render" the whole list, but any text entered in the text boxes is left untouched because React is smart enough to just append the new text box instead of blowing away the old DOM nodes. -->
 		</article>
 
-		<article class="smaller">
-			<div class="build">
-				<ul>
-					<li>引入虚拟DOM，可以很大提高性能，并且具有极大的扩展性<br><img src="lib/images/vitual-dom.png"></li>
-				</ul>
-			</div>
-		</article>
 
 		<article class="smaller">
-			<h3>伸缩容器 ―「display」的值「flex」与「inline-flex」</h3>
-			<div class="build">
-				<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> display
-					</td></tr>
-					<tr>
-					<td> <a href="/html/ig/zh/wiki/Css3-values#value-defs" title="Css3-values" class="mw-redirect"><i>新值：</i></a>
-					</td>
-					<td> <a href="#display-flex"><b>flex</b></a> <span style="color: #CC2200;">|</span> <a href="#display-inline-flex"><b>inline-flex</b></a>
-					</td></tr></tbody></table>
-				<pre><script>render('<div style="display: flex">\n <div>块</div>\n <div style="float: left;">浮动</div>\n 匿名项目 3\n <span>span</span>\n <div>\n  我不是\n  <div>我不是</div>\n  我不是 我不是\n </div>')</script></pre>
-				<iframe src="eg/1.html" frameborder="0" style="height:110px;"></iframe>
-			</div>
+			<h3>组件的生命周期</h3>
+			<img class="lifecycle" src="lib/images/lifecycle.jpg">
 		</article>
-
 		<article class="smaller">
 			<div class="build">
-				<pre style="margin:20px 0"><script>render('<div style="display: flex;justify-content: center;">\n <div style="position: absolute;">绝对定位</div>\n</div>')</script></pre>
-				<iframe src="eg/2.html" frameborder="0" style="height:60px;"></iframe>
-				<pre style="margin:20px 0"><script>render('<div style="display: flex;">\n <div style="position: absolute;">绝对定位</div> <div>块块块块块块</div> <div>块块块块块块</div>\n</div>')</script></pre>
-				<iframe src="eg/3.html" frameborder="0" style="height:60px;"></iframe>
-				<pre style="margin:20px 0"><script>render('<div style="display: flex;">\n <div>块块块块块块</div>\n <div style="position: absolute;">绝对定位</div> <div>块块块块块块</div>\n</div>')</script></pre>
-				<iframe src="eg/4.html" frameborder="0" style="height:60px;"></iframe>
-			</div>
-		</article>
-
-		<article class="smaller">
-			<h3>伸缩容器的主轴方向 ―「flex-direction」属性</h3>
-			<div class="build">
-				<div style="position:relative;">
-					<img src="lib/images/flex-deriction.jpg" alt="flex-deriction" style="position:absolute;top:0;right:0;">
-					<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="flex-direction">flex-direction</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  row <span style="color: #CC2200;">|</span> row-reverse <span style="color: #CC2200;">|</span> column <span style="color: #CC2200;">|</span> column-reverse
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  row
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  伸缩容器
-					</td></tr></tbody></table>
-				</div>
 				<ul class="build">
-					<li>「row」伸缩容器的主轴与当前书写模式的行内轴（文字布局的主要方向，即'direction': ltr | rtl）同向</li>
-					<li>「row-reverse」与row相反</li>
-					<li>「column」伸缩容器的主轴与当前书写模式的块轴（块布局的主要方向，即'writing-mode': horizontal-tb | vertical-rl | vertical-lr）同向</li>
-					<li>「column-reverse」column-reverse</li>
+					<h4>初始化阶段</h4>
+					<ul class="build">
+						<li>getDefaultProps：获取实例的默认属性，对于组件类来说只调用一次，可以在所有实例中共享</li>
+						<li>getInitialState：获取每个实例的初始化状态，可访问组件的 props，每个组件实例来讲都会调用，并且只调一次（只存在组件的内部，每个实例自己维护）</li>
+						<li>componentWillMount：组件即将被装载、渲染到页面上（render之前最好一次修改状态的机会）</li>
+						<li>render：该方法会创建一个虚拟DOM
+							<ul class="build">
+								<li>1. 只能通过 this.props 和 this.state 访问数据（不能修改）</li>
+								<li>2. 可以返回 null,false 或者任何React组件</li>
+								<li>3. 只能出现一个顶级组件，不能返回一组元素</li>
+								<li>4. 不能改变组件的状态</li>
+								<li>5. 不能修改DOM的输出</li>
+							</ul>
+						</li>
+						<li>componentDidMount：真实DOM已被渲染，可以用ReactDOM.findDOMNode()访问到真实的DOM</li>
+					</ul>
+					<h4>存在期</h4>
+					<ul class="build">
+						<li>componentWillReceiveProps：组件将要接收到属性的时候调用，在父组件修改真正发生之前,可以修改属性和状态</li>
+						<li>shouldComponentUpdate：组件接受到新属性或者新状态的时候，可以返回false来阻止组件的重新渲染</li>
+						<li>componentWillUpdate：在组件接收到了新的 props 或者 state 即将进行重新渲染前被调用，不能更新 props 或者 state</li>
+						<li>componentDidUpdate：在组件重新被渲染之后会被调用，可以访问并修改 DOM。</li>
+					</ul>
 				</ul>
+				
 			</div>
 		</article>
-
 		<article class="smaller">
-			<h3>伸缩行换行 ―「flex-wrap」属性</h3>
 			<div class="build">
-				<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="flex-wrap">flex-wrap</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  nowrap <span style="color: #CC2200;">|</span> wrap <span style="color: #CC2200;">|</span> wrap-reverse
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  nowrap
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  伸缩容器
-					</td></tr></tbody></table>
-			</div>
-			<ul class="build">
-				<li>「flex-wrap」属性控制伸缩容器是单行还是多行，也决定了侧轴方向 ― 新的一行的堆放方向</li>
-				<li>「nowrap」伸缩容器为单行</li>
-				<li>「wrap」伸缩容器为多行，新的一行的堆放方向为侧轴的方向</li>
-				<li>「wrap-reverse」伸缩容器为多行，新的一行的堆放方向与侧轴的方向相反</li>
-			</ul>
-		</article>
-
-		<article class="smaller">
-			<h3>伸缩方向与换行 ―「flex-flow」缩写</h3>
-			<div class="build">
-				<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="flex-flow">flex-flow</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  &lt;「<a href="#flex-direction"><code>flex-direction</code></a>」&gt; <span style="color: #CC2200;">||</span> &lt;「<a href="#flex-wrap"><code>flex-wrap</code></a>」&gt;
-					</td></tr></tbody></table>
-				<pre><script>render('div { flex-flow: row; }\ndiv { flex-flow: column wrap; }\ndiv { flex-flow: row-reverse wrap-reverse; }')</script></pre>
-				<div style="display:flex;flex-flow:wrap">
-					<iframe src="eg/5.html" frameborder="0" style="width:100%;height:70px;flex:100%;"></iframe>
-					<iframe src="eg/6.html" frameborder="0" style="height:160px;flex:50%;"></iframe>
-					<iframe src="eg/7.html" frameborder="0" style="height:160px;flex:50%;"></iframe>
-				</div>
-			</div>
-		</article>
-
-		<article class="smaller">
-			<h3>显示顺序 ―「order」属性</h3>
-			<div class="build">
-				<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="order">order</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  <i>&lt;number&gt;数值越小越靠前，若有多个项目有相同的「order」值，这些项目照文件顺序排</i>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  0
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  所有元素
-					</td></tr></tbody></table>
-				<div style="display:flex;">
-					<pre style="flex:1;"><script>render('<body>\n <header>header</header>\n <div id="main">\n <article>article</article>\n <nav>nav</nav>\n <aside>aside</aside></div>\n <footer>footer</footer>\n</body>')</script></pre>
-
-				</div>
+				<ul class="build">
+					<h4>销毁时</h4>
+					<ul class="build">
+						<li>componentWillReceiveProps：组件真正删除之前调用，需要开发者来销毁，如创建的定时器或事件监听器</li>
+						<li><span class="example">见例子2</span></li>
+					</ul>
+					<table>
+						<thead>
+							<tr>
+								<td>生命周期</td>
+								<td>调用次数</td>
+								<td>能否使用 setSate()</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>getDefaultProps</td>
+								<td>1(全局调用一次)</td>
+								<td>否</td>
+							</tr>
+							<tr>
+								<td>getInitialState</td>
+								<td>1</td>
+								<td>否</td>
+							</tr>
+							<tr>
+								<td>componentWillMount</td>
+								<td>1</td>
+								<td>是</td>
+							</tr>
+							<tr>
+								<td>render</td>
+								<td>>=1</td>
+								<td>否</td>
+							</tr>
+							<tr>
+								<td>componentDidMount</td>
+								<td>1</td>
+								<td>是</td>
+							</tr>
+							<tr>
+								<td>componentWillReceiveProps</td>
+								<td>>=0</td>
+								<td>是</td>
+							</tr>
+							<tr>
+								<td>shouldComponentUpdate</td>
+								<td>>=0</td>
+								<td>否</td>
+							</tr>
+							<tr>
+								<td>componentWillUpdate</td>
+								<td>>=0</td>
+								<td>否</td>
+							</tr>
+							<tr>
+								<td>componentDidUpdate</td>
+								<td>>=0</td>
+								<td>否</td>
+							</tr>
+							<tr>
+								<td>componentWillUnmount</td>
+								<td>1</td>
+								<td>否</td>
+							</tr>
+						</tbody>
+					</table>
+				</ul>
 				
 			</div>
 		</article>
 
-		<article class="smaller" >
+		<article class="smaller">
+			<h3>react思想流程</h3>
 			<div class="build">
-				<div style="display:flex;">
-					<pre style="flex:1;">
-#main { display: flex; }
-#main > article { flex:1;
-                  order: 2; }
-#main > nav     { width: 200px;
-                  order: 1; }
-#main > aside   { width: 200px;
-                  order: 3; }
-</pre>
-					<pre style="flex:1;">
-@media all and (max-width: 600px) {
-   #main { flex-flow: column; }
-   #main > article, #main > nav,
-   #main > aside {
-   /* 回到文件顺序 */
-       order: 0; width: auto;
-   }
-}</pre>
-				</div>
-				<div style="display:flex;">
-					<iframe src="eg/8.html" frameborder="0" style="flex:1;height:200px"></iframe>
-					<iframe src="eg/8.html" frameborder="0" style="width:300px;height:300px"></iframe>
+				<div>
+					<img src="lib/images/example-ui.png"><br>
+					<pre>
+[
+  {category: "Sporting Goods", price: "$49.99", stocked: true, name: "Football"},
+  {category: "Sporting Goods", price: "$9.99", stocked: true, name: "Baseball"},
+  {category: "Sporting Goods", price: "$29.99", stocked: false, name: "Basketball"},
+  {category: "Electronics", price: "$99.99", stocked: true, name: "iPod Touch"},
+  {category: "Electronics", price: "$399.99", stocked: false, name: "iPhone 5"},
+  {category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7"}
+];
+					</pre>
 				</div>
 			</div>
 		</article>
 
 		<article class="smaller">
-			<h3>主轴对齐 ―「justify-content」属性</h3>
-			<div class="build">
-				<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="justify-content">justify-content</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  flex-start <span style="color: #CC2200;">|</span> flex-end <span style="color: #CC2200;">|</span> center <span style="color: #CC2200;">|</span> space-between <span style="color: #CC2200;">|</span> space-around
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  flex-start
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  可伸缩容器
-					</td></tr></tbody></table>
-				<p style="text-align:center;"><img src="lib/images/justify-content.png"></p>
-			</div>
-		</article>
-
-		<article class="smaller">
-			<h3>侧轴对齐 ―「align-items」与「align-self」属性</h3>
-			<div class="build">
-				<div style="display:flex;">
-					<table style="width: 50%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 18%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="align-items">align-items</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  flex-start <span style="color: #CC2200;">|</span> flex-end <span style="color: #CC2200;">|</span> center <span style="color: #CC2200;">|</span> baseline <span style="color: #CC2200;">|</span> stretch
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  stretch
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  可伸缩容器
-					</td></tr></tbody></table>
-					<table style="width: 50%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 19%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="align-self">align-self</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  auto <span style="color: #CC2200;">|</span> flex-start <span style="color: #CC2200;">|</span> flex-end <span style="color: #CC2200;">|</span> center <span style="color: #CC2200;">|</span> baseline <span style="color: #CC2200;">|</span> stretch
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  auto
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  <a href="#flex-item">伸缩项目</a>
-					</td></tr></tbody></table>
-				</div>
-				<p style="text-align:center;"><img src="lib/images/align-items.png"></p>
-			</div>
-			
-		</article>
-
-		<article class="smaller">
-			<h3>堆栈伸缩行 ―「align-content」属性</h3>
-			<div class="build">
-				<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="align-content">align-content</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  flex-start <span style="color: #CC2200;">|</span> flex-end <span style="color: #CC2200;">|</span> center <span style="color: #CC2200;">|</span> space-between <span style="color: #CC2200;">|</span> space-around <span style="color: #CC2200;">|</span> stretch
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  stretch
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">   <a href="#multi-line">多行</a>伸缩容器
-					</td></tr></tbody></table>
-				<p style="text-align:center;"><img src="lib/images/align-content.png" width="482"></p>
-			</div>
-		</article>
-
-		<article class="smaller">
-			<h3>「flex-grow」属性</h3>
-			<div class="build">
-				<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="flex-grow">flex-grow</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  <i>&lt;number&gt;负值不合法</i>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  0
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  伸缩项目
-					</td></tr>
-					<tr>
-					<td> <i>动画：</i>
-					</td>
-					<td>  是，除了在「<code>0</code>」与其他值之间转变以外。
-					</td></tr></tbody></table>
-				<p>「flex-grow」此 <number> 部件可以用来设置「flex-grow」长写并指定扩展比率，也就是剩余空间是正值的时候此伸缩项目相对于伸缩容器里其他伸缩项目能分配到空间比例。若省略了此部件，则它会被设为「1」。</p>
-			</div>
-		</article>
-
-		<article class="smaller">
-			<h3>「flex-shrink」属性</h3>
-			<div class="build">
-				<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="flex-shrink">flex-shrink</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  <i>&lt;number&gt;负值不合法</i>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  1
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  伸缩项目
-					</td></tr>
-					<tr>
-					<td> <i>动画：</i>
-					</td>
-					<td>  是，除了在「<code>0</code>」与其他值之间转变以外。
-					</td></tr></tbody></table>
-				<p>「flex-shrink」此 <number> 部件可以用来设置「flex-shrink」长写并指定收缩比率，也就是剩余空间是负值的时候此伸缩项目相对于伸缩容器里其他伸缩项目能收缩的空间比例。若省略了此部件，则它会被设为「1」。在收缩的时候收缩比率会以伸缩基准值加权。</p>
-			</div>
-		</article>
-
-		<article class="smaller">
-			<h3>「flex-basis」属性</h3>
-			<div class="build">
-				<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="flex-basis-propdef">flex-basis</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  <i><code>&lt;'width'&gt;</code></i>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  auto
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  伸缩项目
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>百分比：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  相对与伸缩容器的内-<a href="#main-size">主轴长度</a>
-					</td></tr>
-					<tr>
-					<td> <i>动画：</i>
-					</td>
-					<td>  是，只要「<code>width</code>」是可动画的。
-					</td></tr></tbody></table>
-				<p>「flex-basis」与「width」属性使用相同的值的此部件可以用来设置「flex-basis」长写并指定伸缩基准值，也就是根据可伸缩比率计算出剩余空间的分布之前，伸缩项目主轴长度的起始数值。若在「flex」缩写省略了此部件，则「flex-basis」的指定值是长度零。 若「flex-basis」的指定值是「auto」，则伸缩基准值的指定值是元素主轴长度属性的值。（这个值可能是关键字「auto」，代表元素的长度取决于其内容。）</p>
-				<p style="text-align:center;"><img src="lib/images/Rel-vs-abs-flex.zh-hans.png"></p>
-			</div>
-		</article>
-
-		<article class="smaller">
-			<h3>「flex」缩写</h3>
-			<ul class="build">
-				<table style="width: 100%; padding: 0.5em 1em; background: #DEF; border-left: 0.5em solid #8CCBF2;">
-					<tbody><tr>
-					<td style="width: 10%; border-bottom: 1px solid #BBD7E9;"> <i>名称：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <b id="flex">flex</b>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <a href="/html/ig/zh/wiki/Css3-values#.E5.8F.96.E5.80.BC.E6.A0.8F.E4.BD.8D.E8.AF.AD.E6.B3.95" title="Css3-values" class="mw-redirect"><i>取值：</i></a>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  none <span style="color: #CC2200;">| [</span> &lt;'flex-grow'&gt; &lt;'flex-shrink'&gt;<span style="color: #CC2200;">? ||</span> &lt;'flex-basis'&gt; <span style="color: #CC2200;">]</span>
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>初始：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  参见各属性
-					</td></tr>
-					<tr>
-					<td style="border-bottom: 1px solid #BBD7E9;"> <i>适用于：</i>
-					</td>
-					<td style="border-bottom: 1px solid #BBD7E9;">  伸缩项目
-					</td></tr></tbody></table>
-				<p>「flex」的常见值</p>
 				<ul class="build">
-					<li>「flex: 0 auto」 「flex: initial」与「flex: 0 1 auto」相同。（这也就是初始值。）根据「width」／「height」属性决定元素的尺寸。（如果项目的主轴长度属性的计算值为「auto」，则会根据其内容来决定元素尺寸。）当剩余空间为正值时，伸缩项目无法伸缩，但当空间不足时，伸缩项目可收缩至其最小值。网页作者可以用对齐相关的属性以及「margin」属性的「auto」值控制伸缩项目沿着主轴的对齐方式。</li>
-					<li>「flex: auto」与「flex: 1 1 auto」相同。根据「width」／「height」属性决定元素的尺寸，但是完全可以伸缩，会吸收主轴上剩下的空间。如果所有项目均为「flex: auto」、「flex: initial」或「flex: none」，则在项目尺寸决定后，剩余的正空间会被平分给是「flex: auto」的项目。</li>
-					<li>「flex: none」与「flex: 0 0 auto」相同。根据「width」／「height」属性决定元素的尺寸，但是完全不可伸缩。其效果与「initial」类似，但即使在空间不够而溢出的情况下，伸缩项目也不能收缩。</li>
-					<li>「flex: [positive-number]」与「flex: [positive-number] 1 0px」相同。该值使元素可伸缩，并将伸缩基准值设置为零，导致该项目会根据设置的比率占用伸缩容器的剩余空间。如果一个伸缩容器里的所有项目都使用此模式，则它们的尺寸会正比于指定的伸缩比率。</li>
+					<li>
+						(1) 把UI划分成有继承关系的组件: 一个组件只做一件事儿<br>
+						<div class="flex">
+							<img src="lib/images/example-ui-devide.png">
+							<pre>
+FilterableProductTable (包含整个UI box)
+
+	SearchBar (处理所有用户的输入值)
+
+	ProductTable (根据用户输入值过滤并展示列表)
+
+		ProductCategoryRow (展示每类商品的类别)
+
+		ProductRow (展示每类商品的列表)
+							</pre>							
+						</div>
+					</li>
+					<li>
+						(2) 用props传递数据并创建静态模板
+						<pre>
+var ProductCategoryRow = React.createClass({
+  render: function() {
+    return (&lt;tr&gt;&lt;th colSpan="2"&gt;{ this.props.category }&lt;/th&gt;&lt;/tr&gt;);
+}
+});
+						</pre>
+					</li>
 				</ul>
+		</article>
+
+		<article class="smaller">
+			<div class="build">
+				<pre>
+var ProductRow = React.createClass({
+  render: function() {
+    var name = this.props.product.stocked ?
+      this.props.product.name :&lt;span style={{color: 'red'}}&gt;{this.props.product.name}&lt;/span&gt;;
+    return (
+      &lt;tr&gt;&lt;td&gt;{name}&lt;/td&gt;&lt;td&gt;{this.props.product.price}&lt;/td&gt;&lt;/tr&gt;
+    );
+  }
+});
+
+var ProductTable = React.createClass({
+  render: function() {
+    var rows = [];var lastCategory = null;
+    this.props.products.forEach(function(product) {
+      if (product.category !== lastCategory) {
+        rows.push(&lt;ProductCategoryRow category={product.category} key={product.category} /&gt;);
+      }
+      rows.push(&lt;ProductRow product={product} key={product.name} /&gt;);
+      lastCategory = product.category;
+    });
+    return (
+      &lt;table&gt;
+      	&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Price&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;{rows}&lt;/tbody&gt;
+      &lt;/table&gt;
+    );
+  }
+});
+				</pre>
+			</div>
+
+		</article>
+
+		<article class="smaller">
+			<div class="build">
+				<pre>
+var SearchBar = React.createClass({
+  render: function() {
+    return (
+      &lt;form&gt;
+        &lt;input type="text" placeholder="Search..." /&gt;
+        &lt;p&gt;
+          &lt;input type="checkbox" /&gt;
+          {' '}
+          Only show products in stock
+        &lt;/p&gt;
+      &lt;/form&gt;
+    );
+  }
+});
+
+var FilterableProductTable = React.createClass({
+  render: function() {
+    return (
+      &lt;div&gt;
+        &lt;SearchBar /&gt;
+        &lt;ProductTable products={this.props.products} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+				</pre>
+			</div>
+
+		</article>
+
+		<article class="smaller">
+			<div class="build">
+				<pre>
+var PRODUCTS = [
+  {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
+  {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
+  {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
+  {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
+  {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
+  {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+];
+ 
+ReactDOM.render(
+  &lt;FilterableProductTable products={PRODUCTS} /&gt;,
+  document.getElementById('container')
+);
+				</pre>
+				<p>
+					(2) 确定哪些UI是state，哪个组件拥有这个state<br/>
+					&nbsp;&nbsp;state: 用户输入的搜索文本 和 复选框的值<br/>
+					&nbsp;&nbsp;组件: FilterableProductTable <br/>
+					确定state属于哪个组件步骤：<br/>
+				</p>
+			</div>
+
+		</article>
+
+		<article class="smaller">
+			<ul class="build">
+				<li>找出哪些组件基于state变换：ProductTable 需要基于 state 过滤产品列表，SearchBar 需要显示搜索文本和复选框状态</li>
+				<li>找出共同的祖先组件：FilterableProductTable</li>
+				<li>要么是共同的祖先组件，要么是另外一个在组件树中位于更高层级的组件应该拥有这个 state</li>
+				<li>如果找不出拥有这个 state 数据模型的合适的组件，创建一个新的组件来维护这个 state ，然后添加到组件树中，层级位于所有共同拥有者组件的上面</li>
+				<li>
+					<pre>
+var FilterableProductTable = React.createClass({
+  getInitialState: function() {
+    return { filterText: '', inStockOnly: false };
+  },
+  render: function() {
+    return (
+      &lt;div&gt;
+        &lt;SearchBar
+        filterText={this.state.filterText}
+        inStockOnly={this.state.inStockOnly}
+        /&gt;
+        &lt;ProductTable
+          products={this.props.products}
+          filterText={this.state.filterText}
+          inStockOnly={this.state.inStockOnly}
+        /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+					</pre>
+				</li>
 			</ul>
+		</article>
+
+		<article class="smaller">
+			<ul class="build">
+				<pre>
+var ProductTable = React.createClass({
+  render: function() {
+    var rows = [];
+    var lastCategory = null;
+    this.props.products.forEach(function(product) {
+      if (  product.name.indexOf(this.props.filterText) === -1 || 
+      	    (!product.stocked && this.props.inStockOnly)
+      	 ){
+        return;
+      }
+      if (product.category !== lastCategory) {
+        rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
+      }
+      rows.push(<ProductRow product={product} key={product.name} />);
+      lastCategory = product.category;
+    }.bind(this));
+    return (
+      &lt;table>
+        &lt;thead&gt;
+          &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Price&lt;/th&gt;&lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;{rows}&lt;/tbody&gt;
+      &lt;/table&gt;
+    );
+  }
+});
+				</pre>
+			</ul>
+
+		</article>
+
+		<article class="smaller">
+			<div class="build">
+				<p>
+					(3) 添加反向数据流
+					<div>
+						<pre>
+var SearchBar = React.createClass({
+  handleChange: function() {
+    this.props.onUserInput(
+      this.refs.filterTextInput.value,
+      this.refs.inStockOnlyInput.checked
+    );
+  },
+  render: function() {
+    return (
+      &lt;form&gt;
+        &lt;input
+          type="text"
+          placeholder="Search..."
+          value={this.props.filterText}
+          ref="filterTextInput"
+          onChange={this.handleChange}
+        /&gt;&lt;p&gt;
+          &lt;input
+            type="checkbox"
+            checked={this.props.inStockOnly}
+            ref="inStockOnlyInput"
+            onChange={this.handleChange}
+          /&gt;{' '}Only show products in stock&lt;/p&gt;
+      &lt;/form&gt;
+    );
+  }
+});
+						</pre>
+					</div>
+				</p>
+			</div>
+
 		</article>
 
 		<article>
