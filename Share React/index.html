@@ -27,13 +27,8 @@ var render = function(text){
 			<h3>React基础</h3>
 			<ul class="build">
 				<li>介绍</li>
+				<li>组件的生命周期</li>
 				<li>react的思维模式</li>
-				<li>伸缩容器 ―「display」的值「flex」与「inline-flex」</li>
-				<li>伸缩项目</li>
-				<li>排序与方向</li>
-				<li>伸缩行</li>
-				<li>伸缩性</li>
-				<li>对齐</li>
 			</ul>
 		</article>
 
@@ -42,24 +37,60 @@ var render = function(text){
 			<h3>介绍</h3>
 			<ul class="build">
 				<p>React就是以可组合的方式来构建UI，通过虚拟DOM的方式来更新UI的数据变化</p>
-				<p>组件化的开发思路</p>
+				<p>(1)组件化的开发思路</p>
 				<ul class="build">
-					<li>传统的web UI都是通过模板或者html指令的方式。</li>
-					<li>react没有所谓的模板，仅仅从功能角度出发把UI进行拆分，组合。</li>
-					<li>react通过js来render view，推荐JSX</li>
+					<li>react不是MVC框架，仅仅是一种可组合的UI框架</li>
+					<li>传统的web UI都是通过模板或者html指令的方式。react没有所谓的模板，仅仅从功能角度出发把UI进行拆分，组合。<br>
+						<pre>
+如：&lt;div data-ng-repeat="item in rows"
+        data-ng-if="item.status=='updating'"
+        data-ng-class="{'active': item._selected}">&lt;/div&gt;
+&lt;select ng-options="item.subItem as item.label for item in values track by item.id"
+        ng-model="selected"&gt;
+						</pre>
+					</li>
 				</ul>
-				<p>创造性的UI更新方式</p>
-				<ul class="build">
-					<li>传统的UI更新需要知道哪些数据变了，并把变化的数据更新在指定的DOM里，如jquery, angular</li>
-					<li>react只需要更新组件的状态</li>
-				</ul>
+				
 			</ul>
 		</article>
 
 		<article class="smaller">
-			<div class="build flex">
-				<img src="lib/images/example-ui.png">
-				<pre>
+			<ul class="build">
+				<li>react通过js来render view，推荐JSX<br>
+					<pre>
+// plain JavaScript
+var CommentBox = React.createClass({displayName: 'CommentBox',
+  render: function() {
+    return (
+      React.createElement('div', {className: "commentBox"},
+        "Hello, world! I am a CommentBox."
+      )
+    );
+  }
+});
+// use JSX
+var CommentBox = React.createClass({
+  render: function() {
+    return (
+      &lt;div className="commentBox"&gt;
+        Hello, world! I am a CommentBox.
+      &lt;/div&gt;
+    );
+  }
+});							
+					</pre>
+				</li>
+			</ul>
+		</article>
+
+		<article class="smaller">
+			<p>(2)创造性的UI更新方式</p>
+			<ul class="build">
+				<li>传统的UI更新需要知道哪些数据变了，并把变化的数据更新在指定的DOM里，如jquery, angular，而react只需要更新组件的状态</li>
+
+				<div class="build flex">
+					<img src="lib/images/example-ui.png">
+					<pre>
 &lt;tr&gt;
   &lt;td class="name"&gt;Football&lt;/td&gt;
   &lt;td class="price"&gt;$49.99&lt;/td&gt;
@@ -84,8 +115,11 @@ this.state = {
 	filterText: 'Ba',
 	inStockOnly: true
 }	
-				</pre>
-			</div>
+					</pre>
+				</div>
+
+			</ul>
+
 		</article>
 
 		<article class="smaller">
@@ -109,7 +143,7 @@ this.state = {
 					<ul class="build">
 						<li>getDefaultProps：获取实例的默认属性，对于组件类来说只调用一次，可以在所有实例中共享</li>
 						<li>getInitialState：获取每个实例的初始化状态，可访问组件的 props，每个组件实例来讲都会调用，并且只调一次（只存在组件的内部，每个实例自己维护）</li>
-						<li>componentWillMount：组件即将被装载、渲染到页面上（render之前最好一次修改状态的机会）</li>
+						<li>componentWillMount：组件即将被装载、渲染到页面上（render之前最后一次修改状态的机会）</li>
 						<li>render：该方法会创建一个虚拟DOM
 							<ul class="build">
 								<li>1. 只能通过 this.props 和 this.state 访问数据（不能修改）</li>
@@ -121,12 +155,24 @@ this.state = {
 						</li>
 						<li>componentDidMount：真实DOM已被渲染，可以用ReactDOM.findDOMNode()访问到真实的DOM</li>
 					</ul>
+				</ul>
+				
+			</div>
+		</article>
+		<article class="smaller">
+			<div class="build">
+				<ul class="build">
 					<h4>存在期</h4>
 					<ul class="build">
 						<li>componentWillReceiveProps：组件将要接收到属性的时候调用，在父组件修改真正发生之前,可以修改属性和状态</li>
 						<li>shouldComponentUpdate：组件接受到新属性或者新状态的时候，可以返回false来阻止组件的重新渲染</li>
 						<li>componentWillUpdate：在组件接收到了新的 props 或者 state 即将进行重新渲染前被调用，不能更新 props 或者 state</li>
 						<li>componentDidUpdate：在组件重新被渲染之后会被调用，可以访问并修改 DOM。</li>
+					</ul>
+					<h4>销毁时</h4>
+					<ul class="build">
+						<li>componentWillReceiveProps：组件真正删除之前调用，需要开发者来销毁，如创建的定时器或事件监听器</li>
+						<li><span class="example">见例子2</span></li>
 					</ul>
 				</ul>
 				
@@ -135,11 +181,6 @@ this.state = {
 		<article class="smaller">
 			<div class="build">
 				<ul class="build">
-					<h4>销毁时</h4>
-					<ul class="build">
-						<li>componentWillReceiveProps：组件真正删除之前调用，需要开发者来销毁，如创建的定时器或事件监听器</li>
-						<li><span class="example">见例子2</span></li>
-					</ul>
 					<table>
 						<thead>
 							<tr>
@@ -207,7 +248,7 @@ this.state = {
 		</article>
 
 		<article class="smaller">
-			<h3>react思想流程</h3>
+			<h3>react的思维模式</h3>
 			<div class="build">
 				<div>
 					<img src="lib/images/example-ui.png"><br>
@@ -423,9 +464,41 @@ var ProductTable = React.createClass({
 		<article class="smaller">
 			<div class="build">
 				<p>
-					(3) 添加反向数据流
+					(3) 添加反向数据流<br>
+					原因：目前我们的app是顺着组件继承关系从最顶层开始通过props和state来变换UI，所以需要添加反向数据流动方式，在组件内部把state更新到FilterableProductTable组件中。
 					<div>
 						<pre>
+var FilterableProductTable = React.createClass({
+  getInitialState: function() {
+    return { filterText: '', inStockOnly: false };
+  },
+  handleUserInput: function(filterText, inStockOnly) {
+    this.setState({ filterText: filterText, inStockOnly: inStockOnly });
+  },
+  render: function() {
+    return (&lt;div&gt;
+        &lt;SearchBar
+          filterText={this.state.filterText}
+          inStockOnly={this.state.inStockOnly}
+          onUserInput={this.handleUserInput} // pass a callback to SearchBar
+        /&gt;
+        &lt;ProductTable
+          products={this.props.products}
+          filterText={this.state.filterText}
+          inStockOnly={this.state.inStockOnly}
+        /&gt;
+      &lt;/div&gt;);
+  }
+});
+						</pre>
+					</div>
+				</p>
+			</div>
+		</article>
+
+		<article class="smaller">
+			<div class="build">
+				<pre>
 var SearchBar = React.createClass({
   handleChange: function() {
     this.props.onUserInput(
@@ -436,14 +509,14 @@ var SearchBar = React.createClass({
   render: function() {
     return (
       &lt;form&gt;
-        &lt;input
+      	&lt;input
           type="text"
           placeholder="Search..."
           value={this.props.filterText}
           ref="filterTextInput"
           onChange={this.handleChange}
         /&gt;&lt;p&gt;
-          &lt;input
+        &lt;input
             type="checkbox"
             checked={this.props.inStockOnly}
             ref="inStockOnlyInput"
@@ -453,16 +526,8 @@ var SearchBar = React.createClass({
     );
   }
 });
-						</pre>
-					</div>
-				</p>
+				</pre>
 			</div>
-
-		</article>
-
-		<article>
-			<h3>Thank You!</h3>
-			<div class="build"></div>
 		</article>
 
 		<article>
